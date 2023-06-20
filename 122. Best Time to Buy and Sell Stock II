@@ -1,0 +1,35 @@
+int maxProfit(int* prices, int pricesSize){
+    int min = prices[0];
+    int max = prices[0];
+    int maxPrice;
+    int profit = 0;
+    int profit_past = 0;
+
+    //get max profit, max, min price
+    for(int i = 0; i < pricesSize; i++) {
+        if(min > prices[i]) {
+            min = prices[i];
+            max = prices[i]; //cuz can't sell to past days
+        }
+        else if(max < prices[i]) {max = prices[i];}
+        if(profit < (max-min)) {profit = max - min;}
+    }
+    maxPrice = max;
+    min = prices[0];
+    max = prices[0];
+
+    for(int i = 1; i < pricesSize; i++) {
+        if(min > prices[i]) {
+            min = prices[i];
+            max = prices[i]; //cuz can't sell to past days
+        }
+        else if(max < prices[i]) {
+            profit_past += prices[i] - min;
+            min = prices[i];
+            max = prices[i];
+        }
+    }
+
+    if(profit_past > profit) {return profit_past;}
+    return profit;
+}
