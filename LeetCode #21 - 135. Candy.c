@@ -1,45 +1,30 @@
 int candy(int* ratings, int ratingsSize){
     if(ratingsSize == 1) {return 1;}
-
-    int* candyNext = malloc(ratingsSize * sizeof(int));
-    int* candy = malloc(ratingsSize * sizeof(int));
+    
+    int val[ratingsSize]; //candy value
     int sum = 0;
 
-    //initialize candy and flag
+    //initialize candy array
     for(int i = 0; i < ratingsSize; i++) {
-        candy[i] = 1;
-        candyNext[i] = 0;
+        val[i] = 1;
     }
 
-    //adjust candy based on ratings & set flag
+    //adjust candy value comparing with previous rating
+    for(int i = 1; i < ratingsSize; i++) {
+        if(ratings[i-1] < ratings[i]) {val[i] = val[i-1] + 1;}
+    }
+
+    //adjust candy value comparing with next rating
+    for(int i = ratingsSize - 2; i >= 0; i--) {
+        if(ratings[i+1] < ratings[i]) {
+            if(val[i] <= val[i+1]+1) {val[i] = val[i+1] + 1;}
+        }
+    }
+
+    //add up all candies
     for(int i = 0; i < ratingsSize; i++) {
-        if(i == 0) {
-            if(ratings[i+1] < ratings[i]) {
-                candy[i] = candy[i+1] + 1;
-                candyNext[i] = 1;
-            }
-        }
-        else if(i == ratingsSize - 1) {
-            if(ratings[i-1] < ratings[i]) {candy[i] = candy[i-1] + 1;}
-        }
-        else {
-            if(ratings[i+1] < ratings[i]) {
-                candy[i] += 1;
-                candyNext[i] = 1;
-            }
-            if(ratings[i-1] < ratings[i]) {candy[i] = candy[i-1] + 1;}
-        }
+        sum += val[i];
     }
-
-    //adjust candy based on flag
-    for(int i = ratingsSize - 1; i >= 0; i--) {
-        if(candyNext[i]) {
-            if(candy[i+1] >= candy[i]) {candy[i] = candy[i+1] + 1;}
-        }
-    }
-
-    //get sum of all candies
-    for(int i = 0; i < ratingsSize; i++) {sum += candy[i];}
 
     return sum;
 }
