@@ -1,7 +1,7 @@
 int candy(int* ratings, int ratingsSize){
     if(ratingsSize == 1) {return 1;}
     
-    int val[ratingsSize]; //candy value
+    int* val = malloc(ratingsSize * sizeof(int)); //candy value
     int sum = 0;
 
     //initialize candy array
